@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{78CDE493-DE9B-4451-8C77-5A68251EDBDD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AppPerformance</RootNamespace>
+    <AssemblyName>AppPerformance</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Output\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Output\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\app\appblue48.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\LiveChartsNet40\Debug\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.WinForms">
+      <HintPath>..\Dll\LiveChartsNet40\Debug\LiveCharts.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\LiveChartsNet40\Debug\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AutoCapture.cs" />
+    <Compile Include="Common\CommonPara.cs" />
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\ImageHelper.cs" />
+    <Compile Include="Common\AppInfo.cs" />
+    <Compile Include="Common\SystemInfo.cs" />
+    <Compile Include="Config\Config.cs" />
+    <Compile Include="FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSetup.Designer.cs">
+      <DependentUpon>FrmSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MeasureModel.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkinControl\ButtonEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SkinControl\FrmSkinMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkinControl\FrmSkinMain.Designer.cs">
+      <DependentUpon>FrmSkinMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkinControl\MessageBoxEx.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkinControl\MessageBoxEx.Designer.cs">
+      <DependentUpon>MessageBoxEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkinControl\RenderHelper.cs" />
+    <Compile Include="SkinControl\SkinForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSetup.resx">
+      <DependentUpon>FrmSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="SkinControl\FrmSkinMain.resx">
+      <DependentUpon>FrmSkinMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinControl\MessageBoxEx.resx">
+      <DependentUpon>MessageBoxEx.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="Config\Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fonts\iconfont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Images\app\app.png" />
+    <Content Include="Images\app\app32.ico" />
+    <Content Include="Images\app\app48.ico" />
+    <Content Include="Images\app\appblue48.ico" />
+    <Content Include="Images\app\app_blue.png" />
+    <Content Include="Images\skinButton\skinButton17.DownBack.png" />
+    <Content Include="Images\skinButton\skinButton17.MouseBack.png" />
+    <Content Include="Images\skinButton\skinButton17.NormlBack.png" />
+    <Content Include="Images\skinButton\skinButton18.DownBack.png" />
+    <Content Include="Images\skinButton\skinButton18.MouseBack.png" />
+    <Content Include="Images\skinButton\skinButton18.NormlBack.png" />
+    <Content Include="Images\skin\skin03.jpg" />
+    <Content Include="Images\skin\skin06.jpg" />
+    <Content Include="Images\skin\skin13.jpg" />
+    <Content Include="Images\skin\skin25.jpg" />
+    <Content Include="Images\sysButtons\CloseDownBack.png" />
+    <Content Include="Images\sysButtons\CloseMouseBack.png" />
+    <Content Include="Images\sysButtons\CloseNormlBack.png" />
+    <Content Include="Images\sysButtons\MaxDownBack.png" />
+    <Content Include="Images\sysButtons\MaxMouseBack.png" />
+    <Content Include="Images\sysButtons\MaxNormlBack.png" />
+    <Content Include="Images\sysButtons\MiniDownBack.png" />
+    <Content Include="Images\sysButtons\MiniMouseBack.png" />
+    <Content Include="Images\sysButtons\MiniNormlBack.png" />
+    <Content Include="Images\sysButtons\RestoreDownBack.png" />
+    <Content Include="Images\sysButtons\RestoreMouseBack.png" />
+    <Content Include="Images\sysButtons\RestoreNormlBack.png" />
+    <Content Include="Images\sysButtons\SkinDownBack.png" />
+    <Content Include="Images\sysButtons\SkinMouseBack.png" />
+    <Content Include="Images\sysButtons\SkinNormalBack.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

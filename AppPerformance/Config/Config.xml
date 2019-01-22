@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config>
+  <!-- 定时器间隔(s) -->
+  <TimerInterval>1</TimerInterval>
+  
+  <!-- X坐标轴时间片(minute) -->
+  <AxisXSpan>10</AxisXSpan>
+
+  <!-- X坐标轴步进个数 -->
+  <AxisXStepNumber>10</AxisXStepNumber>
+
+  <!-- X坐标轴显示格式 -->
+  <LabelFormatter>mm:ss</LabelFormatter>
+</Config>
