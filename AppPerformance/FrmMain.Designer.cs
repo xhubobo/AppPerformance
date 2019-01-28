@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.panel_tool = new System.Windows.Forms.Panel();
-            this.btn_stop = new AppPerformance.ButtonEx();
-            this.btn_pause = new AppPerformance.ButtonEx();
-            this.btn_start = new AppPerformance.ButtonEx();
+            this.btn_stop = new ButtonEx();
+            this.btn_pause = new ButtonEx();
+            this.btn_start = new ButtonEx();
             this.textBox_app_name = new System.Windows.Forms.TextBox();
             this.label_mem_workingset = new System.Windows.Forms.Label();
             this.label_mem_app = new System.Windows.Forms.Label();
@@ -47,7 +47,7 @@
             this.cartesianChart_cpu = new LiveCharts.WinForms.CartesianChart();
             this.panel_memory = new System.Windows.Forms.Panel();
             this.cartesianChart_mem = new LiveCharts.WinForms.CartesianChart();
-            this.btn_setup = new AppPerformance.ButtonEx();
+            this.btn_setup = new ButtonEx();
             this.panel_content.SuspendLayout();
             this.panel_tool.SuspendLayout();
             this.panel_cpu.SuspendLayout();
