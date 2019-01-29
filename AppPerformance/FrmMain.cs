@@ -31,6 +31,9 @@ namespace AppPerformance
         private bool _isWorkPause;
         private readonly object _isWorkPauseLockHelper = new object();
 
+        private bool _isShowingUi;
+        private readonly object _isShowingUiLockHelper = new object();
+
         private bool IsWorking
         {
             get
@@ -67,6 +70,26 @@ namespace AppPerformance
                 lock (_isWorkPauseLockHelper)
                 {
                     _isWorkPause = value;
+                }
+            }
+        }
+
+        private bool IsShowingUi
+        {
+            get
+            {
+                bool ret;
+                lock (_isShowingUiLockHelper)
+                {
+                    ret = _isShowingUi;
+                }
+                return ret;
+            }
+            set
+            {
+                lock (_isShowingUiLockHelper)
+                {
+                    _isShowingUi = value;
                 }
             }
         }
@@ -115,6 +138,7 @@ namespace AppPerformance
         private void FrmMain_Load(object sender, EventArgs e)
         {
             InitChart();
+            textBox_app_name.Focus();
         }
 
         private void FrmMain_SizeChanged(object sender, EventArgs e)
@@ -140,6 +164,7 @@ namespace AppPerformance
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            StopWork();
             Dispose();
             Environment.Exit(0);
         }
@@ -192,6 +217,7 @@ namespace AppPerformance
                 LabelFormatter = value => value.ToString("f1"),
                 Title = title
             });
+            cartesianChart.Refresh();
         }
 
         //设置Chart坐标轴范围
@@ -210,6 +236,7 @@ namespace AppPerformance
         {
             IsWorking = true;
             IsWorkPause = false;
+            IsShowingUi = false;
             _workThread = new Thread(DoWork)
             {
                 IsBackground = true
@@ -226,6 +253,7 @@ namespace AppPerformance
         {
             IsWorking = false;
             IsWorkPause = false;
+            IsShowingUi = false;
             _workThread?.Join();
             _workThread = null;
         }
@@ -238,7 +266,7 @@ namespace AppPerformance
             while (IsWorking)
             {
                 //暂停
-                if (IsWorkPause)
+                if (IsWorkPause || IsShowingUi)
                 {
                     Thread.Sleep(1);
                     continue;
@@ -269,6 +297,7 @@ namespace AppPerformance
                     AppPrivateMemory = memAppPrivate,
                     AppWorkingSetMemory = memAppWorkingSet
                 };
+                IsShowingUi = true;
                 _syncContext.Post(ShowInfoSafePost, appPerformance);
 
                 //等待计时
@@ -287,6 +316,7 @@ namespace AppPerformance
                 {
                     Thread.Sleep(interval % 100);
                 }
+                Thread.Sleep(1);
             }
         }
 
@@ -322,6 +352,8 @@ namespace AppPerformance
             double memValue = 0;
             ShowLabels(appPerformance, ref memValue);
             ShowCharts(appPerformance.CpuUsage, memValue);
+
+            IsShowingUi = false;
         }
 
         private void ShowLabels(AppPerformance appPerformance, ref double memValue)
