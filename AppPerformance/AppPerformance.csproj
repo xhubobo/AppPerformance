@@ -35,17 +35,6 @@
     <ApplicationIcon>Images\app\appblue48.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dll\LiveChartsNet40\Debug\LiveCharts.dll</HintPath>
-    </Reference>
-    <Reference Include="LiveCharts.WinForms">
-      <HintPath>..\Dll\LiveChartsNet40\Debug\LiveCharts.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dll\LiveChartsNet40\Debug\LiveCharts.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -72,6 +61,8 @@
     <Compile Include="Common\AppInfo.cs" />
     <Compile Include="Common\SystemInfo.cs" />
     <Compile Include="Config\Config.cs" />
+    <Compile Include="Core\AppPerformanceHelper.cs" />
+    <Compile Include="Core\AppPerformanceInfo.cs" />
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -28,6 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.panel_tool = new System.Windows.Forms.Panel();
             this.btn_refresh = new AppPerformance.ButtonEx();
@@ -48,13 +54,15 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel_cpu = new System.Windows.Forms.Panel();
-            this.cartesianChart_cpu = new LiveCharts.WinForms.CartesianChart();
             this.panel_memory = new System.Windows.Forms.Panel();
-            this.cartesianChart_mem = new LiveCharts.WinForms.CartesianChart();
+            this.chart_cpu = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart_mem = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel_content.SuspendLayout();
             this.panel_tool.SuspendLayout();
             this.panel_cpu.SuspendLayout();
             this.panel_memory.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_cpu)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_mem)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_content
@@ -255,37 +263,53 @@
             // 
             // panel_cpu
             // 
-            this.panel_cpu.Controls.Add(this.cartesianChart_cpu);
+            this.panel_cpu.Controls.Add(this.chart_cpu);
             this.panel_cpu.Location = new System.Drawing.Point(10, 100);
             this.panel_cpu.Name = "panel_cpu";
-            this.panel_cpu.Size = new System.Drawing.Size(200, 100);
+            this.panel_cpu.Size = new System.Drawing.Size(307, 266);
             this.panel_cpu.TabIndex = 1;
-            // 
-            // cartesianChart_cpu
-            // 
-            this.cartesianChart_cpu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cartesianChart_cpu.Location = new System.Drawing.Point(0, 0);
-            this.cartesianChart_cpu.Name = "cartesianChart_cpu";
-            this.cartesianChart_cpu.Size = new System.Drawing.Size(200, 100);
-            this.cartesianChart_cpu.TabIndex = 0;
-            this.cartesianChart_cpu.Text = "CPU曲线";
             // 
             // panel_memory
             // 
-            this.panel_memory.Controls.Add(this.cartesianChart_mem);
-            this.panel_memory.Location = new System.Drawing.Point(10, 300);
+            this.panel_memory.Controls.Add(this.chart_mem);
+            this.panel_memory.Location = new System.Drawing.Point(447, 100);
             this.panel_memory.Name = "panel_memory";
-            this.panel_memory.Size = new System.Drawing.Size(200, 100);
+            this.panel_memory.Size = new System.Drawing.Size(267, 249);
             this.panel_memory.TabIndex = 2;
             // 
-            // cartesianChart_mem
+            // chart_cpu
             // 
-            this.cartesianChart_mem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cartesianChart_mem.Location = new System.Drawing.Point(0, 0);
-            this.cartesianChart_mem.Name = "cartesianChart_mem";
-            this.cartesianChart_mem.Size = new System.Drawing.Size(200, 100);
-            this.cartesianChart_mem.TabIndex = 0;
-            this.cartesianChart_mem.Text = "内存曲线";
+            chartArea2.Name = "ChartArea1";
+            this.chart_cpu.ChartAreas.Add(chartArea2);
+            this.chart_cpu.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend2.Name = "Legend1";
+            this.chart_cpu.Legends.Add(legend2);
+            this.chart_cpu.Location = new System.Drawing.Point(0, 0);
+            this.chart_cpu.Name = "chart_cpu";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart_cpu.Series.Add(series2);
+            this.chart_cpu.Size = new System.Drawing.Size(307, 266);
+            this.chart_cpu.TabIndex = 3;
+            this.chart_cpu.Text = "chart1";
+            // 
+            // chart_mem
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart_mem.ChartAreas.Add(chartArea1);
+            this.chart_mem.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.chart_mem.Legends.Add(legend1);
+            this.chart_mem.Location = new System.Drawing.Point(0, 0);
+            this.chart_mem.Name = "chart_mem";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart_mem.Series.Add(series1);
+            this.chart_mem.Size = new System.Drawing.Size(267, 249);
+            this.chart_mem.TabIndex = 4;
+            this.chart_mem.Text = "chart1";
             // 
             // FrmMain
             // 
@@ -305,6 +329,8 @@
             this.panel_tool.PerformLayout();
             this.panel_cpu.ResumeLayout(false);
             this.panel_memory.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart_cpu)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_mem)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -327,11 +353,11 @@
         private ButtonEx btn_pause;
         private System.Windows.Forms.Panel panel_memory;
         private System.Windows.Forms.Panel panel_cpu;
-        private LiveCharts.WinForms.CartesianChart cartesianChart_mem;
-        private LiveCharts.WinForms.CartesianChart cartesianChart_cpu;
         private ButtonEx btn_setup;
         private ButtonEx btn_refresh;
         private System.Windows.Forms.Label label_thread_count;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_cpu;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_mem;
     }
 }
