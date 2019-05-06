@@ -13,5 +13,8 @@ namespace AppPerformance.Common
 
         public const int MINUTE_PER_SECOND = 60;
         public const int HOUR_PER_SECOND = MINUTE_PER_SECOND * 60;
+
+        public const int MajorVersion = 1;  //主版本
+        public const int MinorVersion = 1;  //次版本
     }
 }

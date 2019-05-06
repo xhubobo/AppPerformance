@@ -176,5 +176,34 @@ namespace AppPerformance
 
             return ret;
         }
+
+        public bool GetThreadCount(ref int threadCount, ref string errMsg)
+        {
+            bool ret = false;
+
+            //获取进程
+            var processes = Process.GetProcessesByName(mProcessName);
+            if (processes != null && processes.GetLength(0) > 0)
+            {
+                try
+                {
+                    using (var process = processes[0])
+                    {
+                        threadCount = process.Threads.Count;
+                        ret = true;
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    errMsg = ex.Message;
+                }
+            }
+            else
+            {
+                errMsg = @"进程名称无效";
+            }
+
+            return ret;
+        }
     }
 }

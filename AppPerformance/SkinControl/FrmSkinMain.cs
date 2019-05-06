@@ -22,6 +22,9 @@ namespace AppPerformance.SkinControl
 
             SkinToolStripMenuItem_Click(护眼绿ToolStripMenuItem, null);
 
+            //版本号
+            label_version.Text = $"{Constants.MajorVersion}.{Constants.MinorVersion}";
+
             //最大化时不会遮盖任务栏
             this.MaximumSize = new Size(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
         }

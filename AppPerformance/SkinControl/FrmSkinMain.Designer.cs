@@ -36,7 +36,7 @@
             this.护眼绿ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel_content = new System.Windows.Forms.Panel();
             this.panel_bottom = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label_version = new System.Windows.Forms.Label();
             this.panel_title = new System.Windows.Forms.Panel();
             this.pictureBox_skin = new System.Windows.Forms.PictureBox();
             this.pictureBox_min = new System.Windows.Forms.PictureBox();
@@ -61,12 +61,12 @@
             this.青草地ToolStripMenuItem,
             this.护眼绿ToolStripMenuItem});
             this.contextMenuStrip_skin.Name = "contextMenuStrip_skin";
-            this.contextMenuStrip_skin.Size = new System.Drawing.Size(153, 92);
+            this.contextMenuStrip_skin.Size = new System.Drawing.Size(113, 70);
             // 
             // 喜庆红ToolStripMenuItem
             // 
             this.喜庆红ToolStripMenuItem.Name = "喜庆红ToolStripMenuItem";
-            this.喜庆红ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.喜庆红ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.喜庆红ToolStripMenuItem.Tag = "festival_red";
             this.喜庆红ToolStripMenuItem.Text = "喜庆红";
             this.喜庆红ToolStripMenuItem.Click += new System.EventHandler(this.SkinToolStripMenuItem_Click);
@@ -74,7 +74,7 @@
             // 青草地ToolStripMenuItem
             // 
             this.青草地ToolStripMenuItem.Name = "青草地ToolStripMenuItem";
-            this.青草地ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.青草地ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.青草地ToolStripMenuItem.Tag = "grass";
             this.青草地ToolStripMenuItem.Text = "青草地";
             this.青草地ToolStripMenuItem.Click += new System.EventHandler(this.SkinToolStripMenuItem_Click);
@@ -82,7 +82,7 @@
             // 护眼绿ToolStripMenuItem
             // 
             this.护眼绿ToolStripMenuItem.Name = "护眼绿ToolStripMenuItem";
-            this.护眼绿ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.护眼绿ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.护眼绿ToolStripMenuItem.Tag = "eye_green";
             this.护眼绿ToolStripMenuItem.Text = "护眼绿";
             this.护眼绿ToolStripMenuItem.Click += new System.EventHandler(this.SkinToolStripMenuItem_Click);
@@ -97,21 +97,21 @@
             // panel_bottom
             // 
             this.panel_bottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(153)))), ((int)(((byte)(83)))));
-            this.panel_bottom.Controls.Add(this.label1);
+            this.panel_bottom.Controls.Add(this.label_version);
             this.panel_bottom.Location = new System.Drawing.Point(2, 248);
             this.panel_bottom.Name = "panel_bottom";
             this.panel_bottom.Size = new System.Drawing.Size(476, 20);
             this.panel_bottom.TabIndex = 3;
             // 
-            // label1
+            // label_version
             // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(4, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = " V1.0";
+            this.label_version.AutoSize = true;
+            this.label_version.ForeColor = System.Drawing.Color.White;
+            this.label_version.Location = new System.Drawing.Point(4, 4);
+            this.label_version.Name = "label_version";
+            this.label_version.Size = new System.Drawing.Size(35, 12);
+            this.label_version.TabIndex = 0;
+            this.label_version.Text = " V1.0";
             // 
             // panel_title
             // 
@@ -241,6 +241,6 @@
         private System.Windows.Forms.ToolStripMenuItem 护眼绿ToolStripMenuItem;
         protected System.Windows.Forms.Panel panel_content;
         private System.Windows.Forms.Panel panel_bottom;
-        private System.Windows.Forms.Label label1;
+        protected System.Windows.Forms.Label label_version;
     }
 }

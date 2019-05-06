@@ -30,15 +30,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.panel_tool = new System.Windows.Forms.Panel();
-            this.btn_setup = new ButtonEx();
-            this.btn_stop = new ButtonEx();
-            this.btn_pause = new ButtonEx();
-            this.btn_start = new ButtonEx();
-            this.btn_refresh = new ButtonEx();
+            this.btn_refresh = new AppPerformance.ButtonEx();
+            this.btn_setup = new AppPerformance.ButtonEx();
+            this.btn_stop = new AppPerformance.ButtonEx();
+            this.btn_pause = new AppPerformance.ButtonEx();
+            this.btn_start = new AppPerformance.ButtonEx();
             this.textBox_app_name = new System.Windows.Forms.TextBox();
+            this.label_thread_count = new System.Windows.Forms.Label();
             this.label_mem_workingset = new System.Windows.Forms.Label();
             this.label_mem_app = new System.Windows.Forms.Label();
             this.label_sys_mem = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label_cpu_usage = new System.Windows.Forms.Label();
             this.label_mem_workingset_show = new System.Windows.Forms.Label();
             this.label_mem_app_show = new System.Windows.Forms.Label();
@@ -73,9 +75,11 @@
             this.panel_tool.Controls.Add(this.btn_pause);
             this.panel_tool.Controls.Add(this.btn_start);
             this.panel_tool.Controls.Add(this.textBox_app_name);
+            this.panel_tool.Controls.Add(this.label_thread_count);
             this.panel_tool.Controls.Add(this.label_mem_workingset);
             this.panel_tool.Controls.Add(this.label_mem_app);
             this.panel_tool.Controls.Add(this.label_sys_mem);
+            this.panel_tool.Controls.Add(this.label4);
             this.panel_tool.Controls.Add(this.label_cpu_usage);
             this.panel_tool.Controls.Add(this.label_mem_workingset_show);
             this.panel_tool.Controls.Add(this.label_mem_app_show);
@@ -87,6 +91,17 @@
             this.panel_tool.Name = "panel_tool";
             this.panel_tool.Size = new System.Drawing.Size(956, 65);
             this.panel_tool.TabIndex = 0;
+            // 
+            // btn_refresh
+            // 
+            this.btn_refresh.BackColor = System.Drawing.Color.Transparent;
+            this.btn_refresh.Location = new System.Drawing.Point(639, 10);
+            this.btn_refresh.Name = "btn_refresh";
+            this.btn_refresh.Size = new System.Drawing.Size(75, 23);
+            this.btn_refresh.TabIndex = 3;
+            this.btn_refresh.Text = "刷新";
+            this.btn_refresh.UseVisualStyleBackColor = false;
+            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
             // btn_setup
             // 
@@ -139,6 +154,15 @@
             this.textBox_app_name.Size = new System.Drawing.Size(194, 21);
             this.textBox_app_name.TabIndex = 1;
             // 
+            // label_thread_count
+            // 
+            this.label_thread_count.AutoSize = true;
+            this.label_thread_count.Location = new System.Drawing.Point(853, 44);
+            this.label_thread_count.Name = "label_thread_count";
+            this.label_thread_count.Size = new System.Drawing.Size(17, 12);
+            this.label_thread_count.TabIndex = 0;
+            this.label_thread_count.Text = "12";
+            // 
             // label_mem_workingset
             // 
             this.label_mem_workingset.AutoSize = true;
@@ -165,6 +189,15 @@
             this.label_sys_mem.Size = new System.Drawing.Size(101, 12);
             this.label_sys_mem.TabIndex = 0;
             this.label_sys_mem.Text = "6.0/7.9 GB (76%)";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(800, 44);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "线程数：";
             // 
             // label_cpu_usage
             // 
@@ -254,17 +287,6 @@
             this.cartesianChart_mem.TabIndex = 0;
             this.cartesianChart_mem.Text = "内存曲线";
             // 
-            // btn_refresh
-            // 
-            this.btn_refresh.BackColor = System.Drawing.Color.Transparent;
-            this.btn_refresh.Location = new System.Drawing.Point(639, 10);
-            this.btn_refresh.Name = "btn_refresh";
-            this.btn_refresh.Size = new System.Drawing.Size(75, 23);
-            this.btn_refresh.TabIndex = 3;
-            this.btn_refresh.Text = "刷新";
-            this.btn_refresh.UseVisualStyleBackColor = false;
-            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -309,5 +331,7 @@
         private LiveCharts.WinForms.CartesianChart cartesianChart_cpu;
         private ButtonEx btn_setup;
         private ButtonEx btn_refresh;
+        private System.Windows.Forms.Label label_thread_count;
+        private System.Windows.Forms.Label label4;
     }
 }

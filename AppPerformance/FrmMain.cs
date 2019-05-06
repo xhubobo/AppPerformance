@@ -123,6 +123,7 @@ namespace AppPerformance
             label_cpu_usage.Text = @"0.0 %";
             label_mem_app.Text = @"0.0 MB";
             label_mem_workingset.Text = @"0.0 MB";
+            label_thread_count.Text = "0";
 
             //XP系统
             if (Environment.OSVersion.Version.Major < 6)
@@ -296,12 +297,22 @@ namespace AppPerformance
                     continue;
                 }
 
-                var appPerformance = new AppPerformance()
+                //线程数
+                var threadCount = 0;
+                if (!mAppInfo.GetThreadCount(ref threadCount, ref errMsg))
+                {
+                    _syncContext.Post(DealwithErrorSafePost, errMsg);
+                    IsWorking = false;
+                    continue;
+                }
+
+                var appPerformance = new AppPerformanceInfo()
                 {
                     SystemMemoryInfo = GetSysMemInfo(),
                     CpuUsage = cpuUsage,
                     AppPrivateMemory = memAppPrivate,
-                    AppWorkingSetMemory = memAppWorkingSet
+                    AppWorkingSetMemory = memAppWorkingSet,
+                    ThreadCount = threadCount
                 };
                 IsShowingUi = true;
                 _syncContext.Post(ShowInfoSafePost, appPerformance);
@@ -349,7 +360,7 @@ namespace AppPerformance
 
         private void ShowInfoSafePost(object state)
         {
-            var appPerformance = state as AppPerformance;
+            var appPerformance = state as AppPerformanceInfo;
             if (appPerformance == null)
             {
                 return;
@@ -357,16 +368,17 @@ namespace AppPerformance
 
             double memValue = 0;
             ShowLabels(appPerformance, ref memValue);
-            ShowCharts(appPerformance.CpuUsage, memValue);
+            //ShowCharts(appPerformance.CpuUsage, memValue);
 
             IsShowingUi = false;
         }
 
-        private void ShowLabels(AppPerformance appPerformance, ref double memValue)
+        private void ShowLabels(AppPerformanceInfo appPerformance, ref double memValue)
         {
             //Labels
             label_cpu_usage.Text = $"{appPerformance.CpuUsage:F1} %";
             label_sys_mem.Text = appPerformance.SystemMemoryInfo;
+            label_thread_count.Text = appPerformance.ThreadCount.ToString();
 
             if (Environment.OSVersion.Version.Major >= 6)
             {
@@ -475,7 +487,7 @@ namespace AppPerformance
         }
         #endregion
 
-        private class AppPerformance
+        private class AppPerformanceInfo
         {
             //系统内存
             public string SystemMemoryInfo { get; set; }
@@ -486,6 +498,9 @@ namespace AppPerformance
             public long AppPrivateMemory { get; set; }
 
             public long AppWorkingSetMemory { get; set; }
+
+            //线程数
+            public int ThreadCount { get; set; }
         }
     }
 }
