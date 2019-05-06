@@ -23,7 +23,7 @@ namespace AppPerformance
         private readonly List<MeasureModel> _cpuValueList = new List<MeasureModel>();
         private readonly List<MeasureModel> _memValueList = new List<MeasureModel>();
 
-        private double _maxMemValue = 0;
+        private double _maxMemValue;
         private double _minMemValue;
         private double _totalMemValue;
 
@@ -109,6 +109,12 @@ namespace AppPerformance
         {
             var now = DateTime.Now;
 
+            var phyMem = _appPerformanceHelper.GetPhysicalMemory();
+            _totalMemValue = Math.Round(1.0 * phyMem / Constants.MB_DIV, 1, MidpointRounding.AwayFromZero);
+
+            _maxMemValue = 0;
+            _minMemValue = _totalMemValue;
+
             //CPU
             var cpuSeries = chart_cpu.Series[0];
             cpuSeries.ChartType = SeriesChartType.Area;
@@ -135,23 +141,17 @@ namespace AppPerformance
             memSeries.BorderColor = Color.Blue;
             memSeries.XValueType = ChartValueType.DateTime;
             memSeries.YValueType = ChartValueType.Single;
-            memSeries.LegendText = "Memory(MB)";
+            memSeries.LegendText = "Memory";
             memSeries.Points.AddXY(-1, 0);
 
             var memArea = chart_mem.ChartAreas[0];
             memArea.AxisX.LabelStyle.Format = "HH:mm";
             memArea.AxisX.LabelStyle.IntervalType = DateTimeIntervalType.Minutes;
-            memArea.AxisX.Minimum = now.ToOADate();
-            memArea.AxisX.Maximum = now.AddMinutes(_config.AxisXSpan).ToOADate();
+            memArea.AxisX.Minimum = cpuArea.AxisX.Minimum;
+            memArea.AxisX.Maximum = cpuArea.AxisX.Maximum;
             memArea.AxisY.LabelStyle.Format = "####";
             memArea.AxisY.Minimum = 0d;
-            memArea.AxisY.Maximum = _maxMemValue;
-
-            var phyMem = _appPerformanceHelper.GetPhysicalMemory();
-            _totalMemValue = Math.Round(1.0 * phyMem / Constants.MB_DIV, 1, MidpointRounding.AwayFromZero);
-
-            _maxMemValue = 0;
-            _minMemValue = _totalMemValue;
+            memArea.AxisY.Maximum = _totalMemValue;
         }
 
         #endregion
@@ -213,39 +213,17 @@ namespace AppPerformance
         {
             var now = DateTime.Now;
 
-            var cpuSeries = chart_cpu.Series[0];
-            cpuSeries.Points.AddXY(now.ToOADate(), cpuValue);
-
-            var memArea = chart_mem.ChartAreas[0];
-            var vPhyMem = Math.Round(1.0 * memValue / Constants.MB_DIV, 1, MidpointRounding.AwayFromZero);
-
-            var maxValue = vPhyMem + 10;
-            if (_maxMemValue <= _totalMemValue && maxValue < _totalMemValue && _maxMemValue < maxValue)
+            _cpuValueList.Add(new MeasureModel
             {
-                _maxMemValue = maxValue;                
-                memArea.AxisY.Maximum = _maxMemValue;
-            }
+                DateTime = now,
+                Value = cpuValue
+            });
 
-            var minValue = vPhyMem - 10;
-            if (_minMemValue > minValue)
+            _memValueList.Add(new MeasureModel
             {
-                _minMemValue = minValue;
-                memArea.AxisY.Minimum = _minMemValue;
-            }
-
-            var memSeries = chart_mem.Series[0];
-            memSeries.Points.AddXY(now.ToOADate(), vPhyMem);
-
-            //             _cpuValueList.Add(new MeasureModel
-            //             {
-            //                 DateTime = now,
-            //                 Value = cpuValue
-            //             });
-            //             _memValueList.Add(new MeasureModel
-            //             {
-            //                 DateTime = now,
-            //                 Value = 1.0 * memValue / Constants.MB_DIV
-            //             });
+                DateTime = now,
+                Value = 1.0 * memValue / Constants.MB_DIV
+            });
         }
         #endregion
 
@@ -264,6 +242,9 @@ namespace AppPerformance
             btn_stop.Enabled = true;
             btn_pause.Text = "暂停";
 
+            _cpuValueList.Clear();
+            _memValueList.Clear();
+
             _config.LoadConfig();
             _appPerformanceHelper.StartWork(_config);
         }
@@ -271,7 +252,7 @@ namespace AppPerformance
         private void btn_pause_Click(object sender, EventArgs e)
         {
             bool? pause = btn_pause.Tag as bool?;
-            if (pause == true)
+            if (pause.HasValue && pause.Value)
             {
                 //暂停
                 btn_pause.Tag = false;
@@ -311,7 +292,59 @@ namespace AppPerformance
 
         private void btn_refresh_Click(object sender, EventArgs e)
         {
+            var cpuSeries = chart_cpu.Series[0];
+            var memSeries = chart_mem.Series[0];
+            var memArea = chart_mem.ChartAreas[0];
 
+            cpuSeries.Points.Clear();
+            memSeries.Points.Clear();
+
+            //X轴范围
+            if(_cpuValueList.Count >= 2)
+            {
+                var span = _cpuValueList[0].DateTime - _cpuValueList[_cpuValueList.Count - 1].DateTime;
+                if(span.Minutes > _config.AxisXSpan)
+                {
+                    var now = DateTime.Now;
+
+                    var cpuArea = chart_cpu.ChartAreas[0];
+                    cpuArea.AxisX.Minimum = now.AddMinutes(-_config.AxisXSpan).ToOADate();
+                    cpuArea.AxisX.Maximum = now.ToOADate();
+                    
+                    memArea.AxisX.Minimum = cpuArea.AxisX.Minimum;
+                    memArea.AxisX.Maximum = cpuArea.AxisX.Maximum;
+                }
+            }
+
+            //CPU
+            foreach (var item in _cpuValueList)
+            {
+                cpuSeries.Points.AddXY(item.DateTime.ToOADate(), item.Value);
+            }
+            
+            //Memory            
+            _minMemValue = _totalMemValue;
+            _maxMemValue = 0;
+
+            foreach(var item in _memValueList)
+            {
+                var maxValue = item.Value + 10;
+                if (_maxMemValue <= _totalMemValue && maxValue < _totalMemValue && _maxMemValue < maxValue)
+                {
+                    _maxMemValue = maxValue;                   
+                }
+
+                var minValue = item.Value - 10;
+                if (_minMemValue > minValue)
+                {
+                    _minMemValue = minValue;                    
+                }
+
+                memSeries.Points.AddXY(item.DateTime.ToOADate(), item.Value);
+            }
+
+            memArea.AxisY.Minimum = _minMemValue;
+            memArea.AxisY.Maximum = _maxMemValue;
         }
         #endregion
     }
