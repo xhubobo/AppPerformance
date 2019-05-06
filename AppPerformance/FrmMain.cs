@@ -223,11 +223,17 @@ namespace AppPerformance
         //设置Chart坐标轴范围
         private void SetAxisLimits(DateTime now)
         {
-            cartesianChart_cpu.AxisX[0].MaxValue = now.Ticks + TimeSpan.FromMinutes(0).Ticks; // lets force the axis to be 100ms ahead
-            cartesianChart_cpu.AxisX[0].MinValue = now.Ticks - TimeSpan.FromMinutes(_config.AxisXSpan).Ticks; //we only care about the last 8 seconds
+            //             cartesianChart_cpu.AxisX[0].MaxValue = now.Ticks + TimeSpan.FromMinutes(0).Ticks; // lets force the axis to be 100ms ahead
+            //             cartesianChart_cpu.AxisX[0].MinValue = now.Ticks - TimeSpan.FromMinutes(_config.AxisXSpan).Ticks; //we only care about the last 8 seconds
+            // 
+            //             cartesianChart_mem.AxisX[0].MaxValue = now.Ticks + TimeSpan.FromMinutes(0).Ticks; // lets force the axis to be 100ms ahead
+            //             cartesianChart_mem.AxisX[0].MinValue = now.Ticks - TimeSpan.FromMinutes(_config.AxisXSpan).Ticks; //we only care about the last 8 seconds
 
-            cartesianChart_mem.AxisX[0].MaxValue = now.Ticks + TimeSpan.FromMinutes(0).Ticks; // lets force the axis to be 100ms ahead
-            cartesianChart_mem.AxisX[0].MinValue = now.Ticks - TimeSpan.FromMinutes(_config.AxisXSpan).Ticks; //we only care about the last 8 seconds
+            cartesianChart_cpu.AxisX[0].MaxValue = now.Ticks + TimeSpan.FromMinutes(_config.AxisXSpan).Ticks;
+            cartesianChart_cpu.AxisX[0].MinValue = now.Ticks;
+
+            cartesianChart_mem.AxisX[0].MaxValue = now.Ticks + TimeSpan.FromMinutes(_config.AxisXSpan).Ticks;
+            cartesianChart_mem.AxisX[0].MinValue = now.Ticks;
         }
         #endregion
 
@@ -389,8 +395,6 @@ namespace AppPerformance
                 Value = 1.0 * memValue / Constants.MB_DIV
             });
 
-            SetAxisLimits(now);
-
             //X坐标轴点个数
             if (mChartValuesCpu.Count > _config.AxisXCount)
             {
@@ -399,6 +403,8 @@ namespace AppPerformance
             if (mChartValuesMem.Count > _config.AxisXCount)
             {
                 mChartValuesMem.RemoveAt(0);
+
+                SetAxisLimits(now);
             }
         } 
         #endregion
@@ -461,6 +467,11 @@ namespace AppPerformance
                     InitChart();
                 }
             }
+        }
+
+        private void btn_refresh_Click(object sender, EventArgs e)
+        {
+
         }
         #endregion
 

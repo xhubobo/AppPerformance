@@ -144,7 +144,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LogHelper\LogHelper.csproj">
+      <Project>{6de11643-c4e3-4df3-ac7e-ea8c80a84322}</Project>
+      <Name>LogHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Images\app\app.png" />
     <Content Include="Images\app\app32.ico" />

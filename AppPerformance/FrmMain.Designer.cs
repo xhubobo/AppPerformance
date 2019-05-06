@@ -30,9 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.panel_tool = new System.Windows.Forms.Panel();
+            this.btn_setup = new ButtonEx();
             this.btn_stop = new ButtonEx();
             this.btn_pause = new ButtonEx();
             this.btn_start = new ButtonEx();
+            this.btn_refresh = new ButtonEx();
             this.textBox_app_name = new System.Windows.Forms.TextBox();
             this.label_mem_workingset = new System.Windows.Forms.Label();
             this.label_mem_app = new System.Windows.Forms.Label();
@@ -47,7 +49,6 @@
             this.cartesianChart_cpu = new LiveCharts.WinForms.CartesianChart();
             this.panel_memory = new System.Windows.Forms.Panel();
             this.cartesianChart_mem = new LiveCharts.WinForms.CartesianChart();
-            this.btn_setup = new ButtonEx();
             this.panel_content.SuspendLayout();
             this.panel_tool.SuspendLayout();
             this.panel_cpu.SuspendLayout();
@@ -66,6 +67,7 @@
             // panel_tool
             // 
             this.panel_tool.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.panel_tool.Controls.Add(this.btn_refresh);
             this.panel_tool.Controls.Add(this.btn_setup);
             this.panel_tool.Controls.Add(this.btn_stop);
             this.panel_tool.Controls.Add(this.btn_pause);
@@ -85,6 +87,17 @@
             this.panel_tool.Name = "panel_tool";
             this.panel_tool.Size = new System.Drawing.Size(956, 65);
             this.panel_tool.TabIndex = 0;
+            // 
+            // btn_setup
+            // 
+            this.btn_setup.BackColor = System.Drawing.Color.Transparent;
+            this.btn_setup.Location = new System.Drawing.Point(554, 10);
+            this.btn_setup.Name = "btn_setup";
+            this.btn_setup.Size = new System.Drawing.Size(75, 23);
+            this.btn_setup.TabIndex = 2;
+            this.btn_setup.Text = "设置";
+            this.btn_setup.UseVisualStyleBackColor = false;
+            this.btn_setup.Click += new System.EventHandler(this.btn_setup_Click);
             // 
             // btn_stop
             // 
@@ -241,16 +254,16 @@
             this.cartesianChart_mem.TabIndex = 0;
             this.cartesianChart_mem.Text = "内存曲线";
             // 
-            // btn_setup
+            // btn_refresh
             // 
-            this.btn_setup.BackColor = System.Drawing.Color.Transparent;
-            this.btn_setup.Location = new System.Drawing.Point(554, 10);
-            this.btn_setup.Name = "btn_setup";
-            this.btn_setup.Size = new System.Drawing.Size(75, 23);
-            this.btn_setup.TabIndex = 2;
-            this.btn_setup.Text = "设置";
-            this.btn_setup.UseVisualStyleBackColor = false;
-            this.btn_setup.Click += new System.EventHandler(this.btn_setup_Click);
+            this.btn_refresh.BackColor = System.Drawing.Color.Transparent;
+            this.btn_refresh.Location = new System.Drawing.Point(639, 10);
+            this.btn_refresh.Name = "btn_refresh";
+            this.btn_refresh.Size = new System.Drawing.Size(75, 23);
+            this.btn_refresh.TabIndex = 3;
+            this.btn_refresh.Text = "刷新";
+            this.btn_refresh.UseVisualStyleBackColor = false;
+            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
             // FrmMain
             // 
@@ -295,5 +308,6 @@
         private LiveCharts.WinForms.CartesianChart cartesianChart_mem;
         private LiveCharts.WinForms.CartesianChart cartesianChart_cpu;
         private ButtonEx btn_setup;
+        private ButtonEx btn_refresh;
     }
 }
