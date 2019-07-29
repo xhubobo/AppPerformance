@@ -79,7 +79,7 @@ namespace AppPerformance.Core
             long phyMem = _systemInfo.PhysicalMemory;
             long sysMem = _systemInfo.PhysicalMemory - _systemInfo.MemoryAvailable;
             var vPhyMem = Math.Round(1.0 * phyMem / Constants.GB_DIV, 1, MidpointRounding.AwayFromZero);
-            var vSysMem = Math.Round(1.0 * sysMem / Constants.GB_DIV, 1, MidpointRounding.AwayFromZero);
+            var vSysMem = Math.Round(1.0 * sysMem / Constants.MB_DIV, 1, MidpointRounding.AwayFromZero);
             var vSysPercent = Math.Round(100.0 * sysMem / phyMem, 0);
             string memTotalPhys = string.Format("{0:F1}/{1:F1} GB ({2:N0}%)", vSysMem, vPhyMem, vSysPercent);
             return memTotalPhys;
