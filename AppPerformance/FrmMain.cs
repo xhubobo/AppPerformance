@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Timer = System.Windows.Forms.Timer;
 
 namespace AppPerformance
 {
@@ -15,13 +16,14 @@ namespace AppPerformance
         //Config
         private readonly Config _config = new Config();
 
-        private AppPerformanceHelper _appPerformanceHelper;
+        private readonly AppPerformanceHelper _appPerformanceHelper;
 
         //UI线程的同步上下文
         private readonly SynchronizationContext _syncContext;
 
         private readonly List<MeasureModel> _cpuValueList = new List<MeasureModel>();
         private readonly List<MeasureModel> _memValueList = new List<MeasureModel>();
+        private readonly Timer _timer;
 
         private double _maxMemValue;
         private double _minMemValue;
@@ -36,12 +38,18 @@ namespace AppPerformance
 
             _syncContext = SynchronizationContext.Current;
 
-            _appPerformanceHelper = new AppPerformanceHelper();
-            _appPerformanceHelper.ErrorAction = OnErrorAction;
-            _appPerformanceHelper.ShowInfoAction = OnShowInfoAction;
+            _appPerformanceHelper = new AppPerformanceHelper
+            {
+                ErrorAction = OnErrorAction,
+                ShowInfoAction = OnShowInfoAction
+            };
+
+            _timer = new Timer {Interval = 10000};
+            _timer.Tick += OnTimer;
         }
 
         #region 窗体消息
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
             TopMost = false;
@@ -58,7 +66,7 @@ namespace AppPerformance
             label_cpu_usage.Text = @"0.0 %";
             label_mem_app.Text = @"0.0 MB";
             label_mem_workingset.Text = @"0.0 MB";
-            label_thread_count.Text = "0";
+            label_thread_count.Text = @"0";
 
             //XP系统
             if (Environment.OSVersion.Version.Major < 6)
@@ -76,18 +84,18 @@ namespace AppPerformance
 
         private void FrmMain_SizeChanged(object sender, EventArgs e)
         {
-            int interval = 5;
-            int height = (this.panel_content.Height - this.panel_tool.Height - interval) / 2;
+            var interval = 5;
+            var height = (panel_content.Height - panel_tool.Height - interval) / 2;
 
-            this.panel_cpu.Width = this.panel_content.Width;
-            this.panel_cpu.Height = height;
-            this.panel_cpu.Left = 0;
-            this.panel_cpu.Top = this.panel_tool.Height;
+            panel_cpu.Width = panel_content.Width;
+            panel_cpu.Height = height;
+            panel_cpu.Left = 0;
+            panel_cpu.Top = panel_tool.Height;
 
-            this.panel_memory.Width = this.panel_content.Width;
-            this.panel_memory.Height = height;
-            this.panel_memory.Left = 0;
-            this.panel_memory.Top = this.panel_tool.Height + height + interval;
+            panel_memory.Width = panel_content.Width;
+            panel_memory.Height = height;
+            panel_memory.Left = 0;
+            panel_memory.Top = panel_tool.Height + height + interval;
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -101,6 +109,7 @@ namespace AppPerformance
             Dispose();
             Environment.Exit(0);
         }
+
         #endregion
 
         #region 初始化
@@ -123,6 +132,7 @@ namespace AppPerformance
             cpuSeries.XValueType = ChartValueType.DateTime;
             cpuSeries.YValueType = ChartValueType.Single;
             cpuSeries.LegendText = "CPU";
+            cpuSeries.Points.Clear();
             cpuSeries.Points.AddXY(-1, 0);
 
             var cpuArea = chart_cpu.ChartAreas[0];
@@ -142,6 +152,7 @@ namespace AppPerformance
             memSeries.XValueType = ChartValueType.DateTime;
             memSeries.YValueType = ChartValueType.Single;
             memSeries.LegendText = "Memory";
+            memSeries.Points.Clear();
             memSeries.Points.AddXY(-1, 0);
 
             var memArea = chart_mem.ChartAreas[0];
@@ -157,9 +168,10 @@ namespace AppPerformance
         #endregion
 
         #region 工作线程
+
         private void OnErrorAction(string errMsg)
         {
-            _syncContext.Post(DealwithErrorSafePost, errMsg);
+            _syncContext.Post(DealWithErrorSafePost, errMsg);
         }
 
         private void OnShowInfoAction(AppPerformanceInfo appPerformanceInfo)
@@ -167,7 +179,7 @@ namespace AppPerformance
             _syncContext.Post(ShowInfoSafePost, appPerformanceInfo);
         }
 
-        private void DealwithErrorSafePost(object state)
+        private void DealWithErrorSafePost(object state)
         {
             var errMsg = state as string;
             if (!string.IsNullOrEmpty(errMsg))
@@ -184,22 +196,24 @@ namespace AppPerformance
                 return;
             }
 
-            double memValue = 0;
-            ShowLabels(appPerformance, ref memValue);
+            double memValue;
+            ShowLabels(appPerformance, out memValue);
             ShowCharts(appPerformance.CpuUsage, memValue);
         }
 
-        private void ShowLabels(AppPerformanceInfo appPerformance, ref double memValue)
+        private void ShowLabels(AppPerformanceInfo appPerformance, out double memValue)
         {
             //Labels
-            label_cpu_usage.Text = $"{appPerformance.CpuUsage:F1} %";
+            label_cpu_usage.Text = $@"{appPerformance.CpuUsage:F1} %";
             label_sys_mem.Text = appPerformance.SystemMemoryInfo;
             label_thread_count.Text = appPerformance.ThreadCount.ToString();
 
             if (Environment.OSVersion.Version.Major >= 6)
             {
-                label_mem_app.Text = string.Format("{0:F1}MB", 1.0 * appPerformance.AppPrivateMemory / Constants.MB_DIV);
-                label_mem_workingset.Text = string.Format("{0:F1}MB", 1.0 * appPerformance.AppWorkingSetMemory / Constants.MB_DIV);
+                label_mem_app.Text =
+                    $@"{1.0 * appPerformance.AppPrivateMemory / Constants.MB_DIV:F1}MB";
+                label_mem_workingset.Text =
+                    $@"{1.0 * appPerformance.AppWorkingSetMemory / Constants.MB_DIV:F1}MB";
                 memValue = appPerformance.AppPrivateMemory;
             }
             else
@@ -225,45 +239,49 @@ namespace AppPerformance
                 Value = 1.0 * memValue / Constants.MB_DIV
             });
         }
+
         #endregion
 
         #region 按钮响应
+
         private void btn_start_Click(object sender, EventArgs e)
         {
-            string errMsg = string.Empty;
-            if (!_appPerformanceHelper.SetProcessName(this.textBox_app_name.Text.Trim(), ref errMsg))
+            var errMsg = string.Empty;
+            if (!_appPerformanceHelper.SetProcessName(textBox_app_name.Text.Trim(), ref errMsg))
             {
                 MessageBoxEx.Warning(errMsg);
                 return;
-            }            
+            }
 
             btn_start.Enabled = false;
             btn_pause.Enabled = true;
             btn_stop.Enabled = true;
-            btn_pause.Text = "暂停";
+            btn_setup.Enabled = false;
+            btn_pause.Text = @"暂停";
 
             _cpuValueList.Clear();
             _memValueList.Clear();
 
             _config.LoadConfig();
             _appPerformanceHelper.StartWork(_config);
+            _timer.Start();
         }
 
         private void btn_pause_Click(object sender, EventArgs e)
         {
-            bool? pause = btn_pause.Tag as bool?;
+            var pause = btn_pause.Tag as bool?;
             if (pause.HasValue && pause.Value)
             {
                 //暂停
                 btn_pause.Tag = false;
-                btn_pause.Text = "继续";
+                btn_pause.Text = @"继续";
                 _appPerformanceHelper.PauseWork(true);
             }
             else
             {
                 //继续
                 btn_pause.Tag = true;
-                btn_pause.Text = "暂停";
+                btn_pause.Text = @"暂停";
                 _appPerformanceHelper.PauseWork(false);
             }
         }
@@ -271,11 +289,13 @@ namespace AppPerformance
         private void btn_stop_Click(object sender, EventArgs e)
         {
             _appPerformanceHelper.StopWork();
+            _timer.Stop();
 
             btn_start.Enabled = true;
             btn_pause.Enabled = false;
             btn_stop.Enabled = false;
-            btn_pause.Text = "暂停";
+            btn_setup.Enabled = true;
+            btn_pause.Text = @"暂停";
         }
 
         private void btn_setup_Click(object sender, EventArgs e)
@@ -283,14 +303,24 @@ namespace AppPerformance
             var setupFrm = new FrmSetup();
             if (setupFrm.ShowDialog() == DialogResult.OK)
             {
-                if (btn_start.Enabled)
-                {
-                    InitCharts();
-                }
+                _config.LoadConfig();
+                InitCharts();
             }
         }
 
         private void btn_refresh_Click(object sender, EventArgs e)
+        {
+            UpdateCharts();
+        }
+
+        #endregion
+
+        private void OnTimer(object sender, EventArgs e)
+        {
+            UpdateCharts();
+        }
+
+        private void UpdateCharts()
         {
             var cpuSeries = chart_cpu.Series[0];
             var memSeries = chart_mem.Series[0];
@@ -300,17 +330,17 @@ namespace AppPerformance
             memSeries.Points.Clear();
 
             //X轴范围
-            if(_cpuValueList.Count >= 2)
+            if (_cpuValueList.Count >= 2)
             {
                 var span = _cpuValueList[0].DateTime - _cpuValueList[_cpuValueList.Count - 1].DateTime;
-                if(span.Minutes > _config.AxisXSpan)
+                if (span.Minutes > _config.AxisXSpan)
                 {
                     var now = DateTime.Now;
 
                     var cpuArea = chart_cpu.ChartAreas[0];
                     cpuArea.AxisX.Minimum = now.AddMinutes(-_config.AxisXSpan).ToOADate();
                     cpuArea.AxisX.Maximum = now.ToOADate();
-                    
+
                     memArea.AxisX.Minimum = cpuArea.AxisX.Minimum;
                     memArea.AxisX.Maximum = cpuArea.AxisX.Maximum;
                 }
@@ -321,23 +351,23 @@ namespace AppPerformance
             {
                 cpuSeries.Points.AddXY(item.DateTime.ToOADate(), item.Value);
             }
-            
+
             //Memory            
             _minMemValue = _totalMemValue;
             _maxMemValue = 0;
 
-            foreach(var item in _memValueList)
+            foreach (var item in _memValueList)
             {
                 var maxValue = item.Value + 10;
                 if (_maxMemValue <= _totalMemValue && maxValue < _totalMemValue && _maxMemValue < maxValue)
                 {
-                    _maxMemValue = maxValue;                   
+                    _maxMemValue = maxValue;
                 }
 
                 var minValue = item.Value - 10;
                 if (_minMemValue > minValue)
                 {
-                    _minMemValue = minValue;                    
+                    _minMemValue = minValue;
                 }
 
                 memSeries.Points.AddXY(item.DateTime.ToOADate(), item.Value);
@@ -346,6 +376,5 @@ namespace AppPerformance
             memArea.AxisY.Minimum = _minMemValue;
             memArea.AxisY.Maximum = _maxMemValue;
         }
-        #endregion
     }
 }
