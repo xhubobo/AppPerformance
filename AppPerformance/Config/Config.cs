@@ -2,17 +2,21 @@
 using System;
 using System.Xml;
 
-namespace AppPerformance
+namespace AppPerformance.Config
 {
     public class Config
     {
         private const int DefaultTimerInterval = 1;
+        private const int DefaultUpdateInterval = 10;
         private const int DefaultAxisXSpan = 10;
         private const int DefaultAxisXStepNumber = 10;
         private const string DefaultLabelFormatter = "mm:ss";
 
-        //定时器间隔(s)
+        //监测定时器间隔(s)
         public int TimerInterval { get; set; } = DefaultTimerInterval;
+
+        //刷新定时器间隔(s)
+        public int UpdateInterval { get; set; } = DefaultUpdateInterval;
 
         //X坐标轴时间片(minute)
         public int AxisXSpan { get; set; } = DefaultAxisXSpan;
@@ -49,7 +53,7 @@ namespace AppPerformance
                     return;
                 }
 
-                //定时器间隔(s)
+                //监测定时器间隔(s)
                 var text = setting.SelectSingleNode("TimerInterval")?.InnerText;
                 if (!string.IsNullOrEmpty(text))
                 {
@@ -57,6 +61,17 @@ namespace AppPerformance
                     if (int.TryParse(text, out interval))
                     {
                         TimerInterval = interval;
+                    }
+                }
+
+                //刷新定时器间隔(s)
+                text = setting.SelectSingleNode("UpdateInterval")?.InnerText;
+                if (!string.IsNullOrEmpty(text))
+                {
+                    int interval;
+                    if (int.TryParse(text, out interval))
+                    {
+                        UpdateInterval = interval;
                     }
                 }
 
@@ -90,7 +105,7 @@ namespace AppPerformance
                 }
 
                 AxisXStep = 1.0 * AxisXSpan / AxisXStepNumber;
-                AxisXCount = (int)(1.0f * AxisXSpan * Constants.MINUTE_PER_SECOND / TimerInterval);
+                AxisXCount = (int) (1.0f * AxisXSpan * Constants.MINUTE_PER_SECOND / TimerInterval);
             }
             catch (Exception e)
             {
@@ -107,29 +122,36 @@ namespace AppPerformance
 
                 var setting = xmlDoc.SelectSingleNode("/Config");
 
-                //定时器间隔(s)
+                //监测定时器间隔(s)
                 var node = setting?.SelectSingleNode("TimerInterval");
                 if (node != null)
                 {
                     node.InnerText = TimerInterval.ToString();
                 }
 
+                //刷新定时器间隔(s)
+                node = setting?.SelectSingleNode("UpdateInterval");
+                if (node != null)
+                {
+                    node.InnerText = UpdateInterval.ToString();
+                }
+
                 //X坐标轴时间片(minute)
-                node = setting.SelectSingleNode("AxisXSpan");
+                node = setting?.SelectSingleNode("AxisXSpan");
                 if (node != null)
                 {
                     node.InnerText = AxisXSpan.ToString();
                 }
 
                 //X坐标轴显示步进(minute)
-                node = setting.SelectSingleNode("AxisXStepNumber");
+                node = setting?.SelectSingleNode("AxisXStepNumber");
                 if (node != null)
                 {
                     node.InnerText = AxisXStepNumber.ToString();
                 }
 
                 //X坐标轴显示格式
-                node = setting.SelectSingleNode("LabelFormatter");
+                node = setting?.SelectSingleNode("LabelFormatter");
                 if (node != null)
                 {
                     node.InnerText = LabelFormatter;
@@ -138,7 +160,7 @@ namespace AppPerformance
                 xmlDoc.Save(_xmlFilePath);
 
                 AxisXStep = 1.0 * AxisXSpan / AxisXStepNumber;
-                AxisXCount = (int)(1.0f * AxisXSpan * Constants.MINUTE_PER_SECOND / TimerInterval);
+                AxisXCount = (int) (1.0f * AxisXSpan * Constants.MINUTE_PER_SECOND / TimerInterval);
             }
             catch (Exception e)
             {

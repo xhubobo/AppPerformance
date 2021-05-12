@@ -10,7 +10,7 @@ namespace AppPerformance.Core
         public Action<AppPerformanceInfo> ShowInfoAction { get; set; }
 
         //Config
-        private Config _config;
+        private Config.Config _config;
 
         //系统内存
         private readonly SystemInfo _systemInfo = new SystemInfo();
@@ -19,6 +19,7 @@ namespace AppPerformance.Core
         private readonly AppInfo _appInfo = new AppInfo();
 
         #region 工作线程
+
         private Thread _workThread;
 
         private bool _isWorking;
@@ -36,6 +37,7 @@ namespace AppPerformance.Core
                 {
                     ret = _isWorking;
                 }
+
                 return ret;
             }
             set
@@ -56,6 +58,7 @@ namespace AppPerformance.Core
                 {
                     ret = _isWorkPause;
                 }
+
                 return ret;
             }
             set
@@ -66,6 +69,7 @@ namespace AppPerformance.Core
                 }
             }
         }
+
         #endregion
 
         public bool SetProcessName(string processName, ref string errMsg)
@@ -76,12 +80,12 @@ namespace AppPerformance.Core
         public string GetSysMemInfo()
         {
             //系统内存：6.0/7.9 GB (76%)
-            long phyMem = _systemInfo.PhysicalMemory;
-            long sysMem = _systemInfo.PhysicalMemory - _systemInfo.MemoryAvailable;
+            var phyMem = _systemInfo.PhysicalMemory;
+            var sysMem = _systemInfo.PhysicalMemory - _systemInfo.MemoryAvailable;
             var vPhyMem = Math.Round(1.0 * phyMem / Constants.GB_DIV, 1, MidpointRounding.AwayFromZero);
             var vSysMem = Math.Round(1.0 * sysMem / Constants.MB_DIV, 1, MidpointRounding.AwayFromZero);
             var vSysPercent = Math.Round(100.0 * sysMem / phyMem, 0);
-            string memTotalPhys = string.Format("{0:F1}/{1:F1} GB ({2:N0}%)", vSysMem, vPhyMem, vSysPercent);
+            var memTotalPhys = $@"{vSysMem:F1}/{vPhyMem:F1} GB ({vSysPercent:N0}%)";
             return memTotalPhys;
         }
 
@@ -91,7 +95,8 @@ namespace AppPerformance.Core
         }
 
         #region 工作线程
-        public void StartWork(Config config)
+
+        public void StartWork(Config.Config config)
         {
             _config = config;
 
@@ -180,17 +185,21 @@ namespace AppPerformance.Core
 
                     Thread.Sleep(100);
                 }
+
                 if (interval % 100 > 0)
                 {
                     Thread.Sleep(interval % 100);
                 }
+
                 Thread.Sleep(1);
             }
         }
+
         #endregion
 
         #region IDisposable Support
-        private bool _disposedValue;    //检测冗余调用
+
+        private bool _disposedValue; //检测冗余调用
 
         protected virtual void Dispose(bool disposing)
         {
@@ -220,6 +229,7 @@ namespace AppPerformance.Core
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

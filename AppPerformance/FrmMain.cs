@@ -14,7 +14,7 @@ namespace AppPerformance
     public partial class FrmMain : FrmSkinMain
     {
         //Config
-        private readonly Config _config = new Config();
+        private readonly Config.Config _config = new Config.Config();
 
         private readonly AppPerformanceHelper _appPerformanceHelper;
 
@@ -264,6 +264,7 @@ namespace AppPerformance
 
             _config.LoadConfig();
             _appPerformanceHelper.StartWork(_config);
+            _timer.Interval = _config.UpdateInterval * 1000;
             _timer.Start();
         }
 

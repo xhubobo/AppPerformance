@@ -43,6 +43,8 @@
             this.text_axis_step_number = new System.Windows.Forms.TextBox();
             this.text_label_formatter = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.text_update_interval = new System.Windows.Forms.TextBox();
             this.panel_title.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
             this.SuspendLayout();
@@ -92,7 +94,7 @@
             // 
             this.btn_cancel.BackColor = System.Drawing.Color.Transparent;
             this.btn_cancel.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_cancel.Location = new System.Drawing.Point(250, 235);
+            this.btn_cancel.Location = new System.Drawing.Point(250, 277);
             this.btn_cancel.Name = "btn_cancel";
             this.btn_cancel.Size = new System.Drawing.Size(100, 30);
             this.btn_cancel.TabIndex = 6;
@@ -104,7 +106,7 @@
             // 
             this.btn_ok.BackColor = System.Drawing.Color.Transparent;
             this.btn_ok.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_ok.Location = new System.Drawing.Point(100, 235);
+            this.btn_ok.Location = new System.Drawing.Point(100, 277);
             this.btn_ok.Name = "btn_ok";
             this.btn_ok.Size = new System.Drawing.Size(100, 30);
             this.btn_ok.TabIndex = 7;
@@ -115,16 +117,16 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(90, 60);
+            this.label1.Location = new System.Drawing.Point(90, 54);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 12);
+            this.label1.Size = new System.Drawing.Size(119, 12);
             this.label1.TabIndex = 8;
-            this.label1.Text = "定时器间隔(s)：";
+            this.label1.Text = "监测定时器间隔(s)：";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(90, 102);
+            this.label2.Location = new System.Drawing.Point(90, 136);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(137, 12);
             this.label2.TabIndex = 8;
@@ -133,7 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(90, 144);
+            this.label3.Location = new System.Drawing.Point(90, 177);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(131, 12);
             this.label3.TabIndex = 8;
@@ -142,7 +144,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(90, 186);
+            this.label4.Location = new System.Drawing.Point(90, 218);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(131, 12);
             this.label4.TabIndex = 8;
@@ -150,7 +152,7 @@
             // 
             // text_timer_interval
             // 
-            this.text_timer_interval.Location = new System.Drawing.Point(250, 51);
+            this.text_timer_interval.Location = new System.Drawing.Point(250, 50);
             this.text_timer_interval.MaxLength = 4;
             this.text_timer_interval.Name = "text_timer_interval";
             this.text_timer_interval.Size = new System.Drawing.Size(110, 21);
@@ -158,7 +160,7 @@
             // 
             // text_axis_span
             // 
-            this.text_axis_span.Location = new System.Drawing.Point(250, 93);
+            this.text_axis_span.Location = new System.Drawing.Point(250, 132);
             this.text_axis_span.MaxLength = 4;
             this.text_axis_span.Name = "text_axis_span";
             this.text_axis_span.Size = new System.Drawing.Size(110, 21);
@@ -166,7 +168,7 @@
             // 
             // text_axis_step_number
             // 
-            this.text_axis_step_number.Location = new System.Drawing.Point(250, 135);
+            this.text_axis_step_number.Location = new System.Drawing.Point(250, 173);
             this.text_axis_step_number.MaxLength = 3;
             this.text_axis_step_number.Name = "text_axis_step_number";
             this.text_axis_step_number.Size = new System.Drawing.Size(110, 21);
@@ -174,7 +176,7 @@
             // 
             // text_label_formatter
             // 
-            this.text_label_formatter.Location = new System.Drawing.Point(250, 177);
+            this.text_label_formatter.Location = new System.Drawing.Point(250, 214);
             this.text_label_formatter.MaxLength = 20;
             this.text_label_formatter.Name = "text_label_formatter";
             this.text_label_formatter.Size = new System.Drawing.Size(110, 21);
@@ -183,25 +185,44 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(250, 200);
+            this.label5.Location = new System.Drawing.Point(250, 235);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(119, 12);
             this.label5.TabIndex = 8;
             this.label5.Text = "yyyy-MM-dd HH:mm:ss";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(90, 95);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(119, 12);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "图表定时器间隔(s)：";
+            // 
+            // text_update_interval
+            // 
+            this.text_update_interval.Location = new System.Drawing.Point(250, 91);
+            this.text_update_interval.MaxLength = 4;
+            this.text_update_interval.Name = "text_update_interval";
+            this.text_update_interval.Size = new System.Drawing.Size(110, 21);
+            this.text_update_interval.TabIndex = 9;
             // 
             // FrmSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(450, 300);
+            this.ClientSize = new System.Drawing.Size(450, 337);
             this.Controls.Add(this.text_label_formatter);
             this.Controls.Add(this.text_axis_step_number);
             this.Controls.Add(this.text_axis_span);
+            this.Controls.Add(this.text_update_interval);
             this.Controls.Add(this.text_timer_interval);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel_title);
@@ -238,5 +259,7 @@
         private System.Windows.Forms.TextBox text_axis_step_number;
         private System.Windows.Forms.TextBox text_label_formatter;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox text_update_interval;
     }
 }
